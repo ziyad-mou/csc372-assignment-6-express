@@ -7,6 +7,10 @@
 
 A full-stack trivia app built with Node.js, Express, and Neon PostgreSQL. Play random questions, browse topics with difficulty/limit filters, check answers, and contribute new questions.
 
+**Live app:** [triviabook-ziyad.onrender.com](https://triviabook-ziyad.onrender.com/)
+
+**Live API:** [Trivia topics](https://triviabook-ziyad.onrender.com/triviabook/topics)
+
 ## Run locally
 
 1. Install Node.js 24, then clone this repository and open its folder in VS Code.
@@ -45,6 +49,10 @@ Question objects contain `id`, `topic`, `question`, and `difficulty`. Answers ar
 - Run `npm run lint:html` to validate the HTML.
 
 JSON configuration and collection files cannot contain comments; their descriptions/metadata identify their purpose. Source files include author/date headers and JavaScript function documentation.
+
+## Verification
+
+Verified on November 19, 2026: all 35 PostgreSQL integration tests passed; the Postman collection passed all 15 requests and 21 assertions on both localhost and the live Render app. Browser checks covered random questions, topic filtering, answer checking, and adding a question. HTML validation passed, and npm reported zero dependency vulnerabilities. The live database includes the five supplied seeds plus technology and astronomy questions added during verification.
 
 ## Deploy to Render
 
