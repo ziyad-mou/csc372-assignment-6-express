@@ -1,0 +1,17 @@
+# Name: Ziyad Abdelhamid
+# Date: 11.19.2026
+# CSC 372: Free Render web service; enter DATABASE_URL privately during setup.
+services:
+  - type: web
+    name: triviabook-ziyad
+    runtime: node
+    plan: free
+    region: virginia
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /triviabook/topics
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false

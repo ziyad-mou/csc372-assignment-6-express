@@ -1,0 +1,436 @@
+{
+  "info": {
+    "name": "Triviabook \u2014 Assignment 6",
+    "description": "Name: Ziyad Abdelhamid\nDate: 11.19.2026\nCSC 372: Postman tests for all five endpoints. Set baseUrl for localhost or Render. The add test creates one real question. Change newTopic before a repeat run to avoid the deliberate duplicate-question 409 response.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000"
+    },
+    {
+      "key": "newTopic",
+      "value": "technology"
+    },
+    {
+      "key": "questionId",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "List topics",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/triviabook/topics",
+        "header": []
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "/** Verify the expected HTTP response. */",
+              "pm.test(\"HTTP 200\", function statusCode() { pm.response.to.have.status(200); });",
+              "/** Check the supplied seed topics. */",
+              "pm.test(\"Seed topics exist\", function seedTopics() { pm.expect(pm.response.json()).to.include(\"science\").and.include(\"geography\"); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Science questions",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/triviabook/topic/science",
+        "header": []
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "/** Verify the expected HTTP response. */",
+              "pm.test(\"HTTP 200\", function statusCode() { pm.response.to.have.status(200); });",
+              "/** Remember the seeded question ID for answer tests. */",
+              "let question = pm.response.json().find(function isMars(item) { return item.question === \"What planet is known as the Red Planet?\"; });",
+              "pm.collectionVariables.set(\"questionId\", question.id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Limit and difficulty",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/triviabook/topic/science?limit=1&difficulty=easy",
+        "header": []
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "/** Verify the expected HTTP response. */",
+              "pm.test(\"HTTP 200\", function statusCode() { pm.response.to.have.status(200); });",
+              "/** Verify that both filters apply. */",
+              "pm.test(\"Filtered result\", function filters() { let rows = pm.response.json(); pm.expect(rows).to.have.lengthOf(1); pm.expect(rows[0].difficulty).to.equal(\"easy\"); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Unknown topic",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/triviabook/topic/no-such-assignment-topic",
+        "header": []
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "/** Verify the expected HTTP response. */",
+              "pm.test(\"HTTP 404\", function statusCode() { pm.response.to.have.status(404); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Invalid limit",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/triviabook/topic/science?limit=-1",
+        "header": []
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "/** Verify the expected HTTP response. */",
+              "pm.test(\"HTTP 400\", function statusCode() { pm.response.to.have.status(400); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Invalid difficulty filter",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/triviabook/topic/science?difficulty=expert",
+        "header": []
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "/** Verify the expected HTTP response. */",
+              "pm.test(\"HTTP 400\", function statusCode() { pm.response.to.have.status(400); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Random question",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/triviabook/random",
+        "header": []
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "/** Verify the expected HTTP response. */",
+              "pm.test(\"HTTP 200\", function statusCode() { pm.response.to.have.status(200); });",
+              "/** Ensure answers are not exposed. */",
+              "pm.test(\"Answer is hidden\", function hiddenAnswer() { pm.expect(pm.response.json()).to.have.all.keys(\"id\", \"topic\", \"question\", \"difficulty\"); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Correct answer with whitespace and mixed case",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/triviabook/answer",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"id\": \"{{questionId}}\", \"guess\": \"  mArS  \"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "/** Verify the expected HTTP response. */",
+              "pm.test(\"HTTP 200\", function statusCode() { pm.response.to.have.status(200); });",
+              "/** Verify normalized comparison. */",
+              "pm.test(\"Correct answer\", function correctAnswer() { pm.expect(pm.response.json()).to.deep.equal({correct:true,answer:\"Mars\"}); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Incorrect answer",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/triviabook/answer",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"id\": \"{{questionId}}\", \"guess\": \"Venus\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "/** Verify the expected HTTP response. */",
+              "pm.test(\"HTTP 200\", function statusCode() { pm.response.to.have.status(200); });",
+              "/** Incorrect guesses still return the canonical answer. */",
+              "pm.test(\"Incorrect answer\", function incorrectAnswer() { pm.expect(pm.response.json()).to.deep.equal({correct:false,answer:\"Mars\"}); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Missing guess",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/triviabook/answer",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"id\": \"{{questionId}}\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "/** Verify the expected HTTP response. */",
+              "pm.test(\"HTTP 400\", function statusCode() { pm.response.to.have.status(400); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Unknown question",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/triviabook/answer",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"id\": 2147483647, \"guess\": \"Mars\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "/** Verify the expected HTTP response. */",
+              "pm.test(\"HTTP 404\", function statusCode() { pm.response.to.have.status(404); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Missing question field",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/triviabook/question/add",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"topic\": \"science\", \"answer\": \"Mars\", \"difficulty\": \"easy\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "/** Verify the expected HTTP response. */",
+              "pm.test(\"HTTP 400\", function statusCode() { pm.response.to.have.status(400); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Invalid new-question difficulty",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/triviabook/question/add",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"topic\": \"science\", \"question\": \"Example?\", \"answer\": \"Example\", \"difficulty\": \"expert\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "/** Verify the expected HTTP response. */",
+              "pm.test(\"HTTP 400\", function statusCode() { pm.response.to.have.status(400); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Add a question and create a topic",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/triviabook/question/add",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"topic\": \"{{newTopic}}\", \"question\": \"What does CPU stand for?\", \"answer\": \"Central Processing Unit\", \"difficulty\": \"easy\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "/** Verify the expected HTTP response. */",
+              "pm.test(\"HTTP 201\", function statusCode() { pm.response.to.have.status(201); });",
+              "/** Verify that the updated list contains the inserted question. */",
+              "pm.test(\"Updated topic list\", function updatedList() { pm.expect(pm.response.json().some(function matches(item) { return item.question === \"What does CPU stand for?\"; })).to.equal(true); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Read the new topic",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/triviabook/topic/{{newTopic}}",
+        "header": []
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "/** Verify the expected HTTP response. */",
+              "pm.test(\"HTTP 200\", function statusCode() { pm.response.to.have.status(200); });"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

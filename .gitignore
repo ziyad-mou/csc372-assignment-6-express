@@ -1,3 +1,6 @@
+# Name: Ziyad Abdelhamid
+# Date: 11.19.2026
+# CSC 372: Exclude dependencies, private environment variables, and generated files.
 # Logs
 logs
 *.log
@@ -155,3 +158,6 @@ vite.config.ts.timestamp-*
 .nx/cache
 .nx/workspace-data
 .nx/migrate-runs
+
+# Local operating-system metadata
+.DS_Store

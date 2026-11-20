@@ -1,0 +1,93 @@
+/*
+ * Name: Ziyad Abdelhamid
+ * Date: 11.19.2026
+ * CSC 372: Responsive typography, forms, quiz cards, and topic browser styles.
+ */
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 2rem; }
+body { margin: 0; color: #182d31; background: #f5f8f7; font: 1rem/1.6 Arial, Helvetica, sans-serif; }
+h1, h2, h3, p { margin-top: 0; }
+h1, h2, h3 { line-height: 1.15; letter-spacing: -0.04em; }
+h1 { font-size: clamp(3.5rem, 8vw, 6.5rem); margin-bottom: 1rem; }
+h2 { font-size: clamp(1.7rem, 3vw, 2.4rem); margin-bottom: 0; }
+h3 { font-size: 1.35rem; }
+a { color: inherit; text-underline-offset: 0.25rem; }
+button, input, select, textarea { font: inherit; }
+button { border: 1px solid #164c46; background: #164c46; color: white; border-radius: 0.5rem; padding: 0.8rem 1.25rem; cursor: pointer; font-weight: 700; }
+button:hover { background: #0d3833; }
+button:disabled { opacity: 0.6; cursor: wait; }
+input, select, textarea { width: 100%; border: 1px solid #b8c8c5; border-radius: 0.4rem; padding: 0.8rem; color: #182d31; background: white; }
+select { appearance: none; padding-right: 2.4rem; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath d='m4 6 4 4 4-4' fill='none' stroke='%23182d31' stroke-width='2'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 0.8rem center; }
+textarea { resize: vertical; }
+label { display: block; font-size: 0.875rem; font-weight: 700; margin-bottom: 0.4rem; }
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 3px solid #a34d1c; outline-offset: 3px; }
+nav { display: flex; gap: 1.8rem; align-items: center; }
+nav a { text-decoration: none; font-size: 0.95rem; font-weight: 700; }
+nav a:hover { text-decoration: underline; }
+main { max-width: 1120px; margin: 0 auto; padding: 0 2rem; }
+section { margin-bottom: 4.5rem; }
+footer { display: flex; justify-content: space-between; gap: 1rem; max-width: 1120px; margin: 0 auto; padding: 2rem; border-top: 1px solid #ccd8d4; font-size: 0.875rem; }
+footer p { margin: 0; }
+footer span { margin-left: 1rem; color: #536965; }
+.eyebrow { text-transform: uppercase; letter-spacing: 0.12em; font-size: 0.75rem; font-weight: 700; margin-bottom: 0.8rem; color: #46665e; }
+.section-heading { display: flex; align-items: end; justify-content: space-between; gap: 1.5rem; margin-bottom: 1.5rem; }
+.secondary-button { color: #164c46; background: transparent; white-space: nowrap; }
+.secondary-button:hover { background: #e2eeea; }
+.badge { display: inline-block; font-size: 0.8rem; text-transform: capitalize; font-weight: 700; border-radius: 2rem; padding: 0.25rem 0.75rem; background: #d5e8e0; color: #1b5146; }
+.field { margin-bottom: 1rem; }
+.question-card { background: white; padding: 1.5rem; border: 1px solid #d4deda; border-radius: 0.75rem; display: flex; flex-direction: column; align-items: start; gap: 1rem; }
+.question-card h3 { flex: 1; margin: 0; line-height: 1.4; letter-spacing: -0.02em; }
+.question-card button { font-size: 0.875rem; }
+.topic-button { background: white; color: #234d44; border-color: #c2d5cc; text-transform: capitalize; border-radius: 2rem; }
+.topic-button:hover, .topic-button[aria-pressed="true"] { color: white; background: #164c46; }
+.error { color: #9f302b; }
+.success { color: #216645; font-weight: 700; }
+#skip-link { position: absolute; top: -5rem; left: 1rem; background: white; padding: 1rem; z-index: 2; }
+#skip-link:focus { top: 1rem; }
+#site-header { max-width: 1120px; margin: 0 auto; padding: 1.5rem 2rem; display: flex; justify-content: space-between; align-items: center; gap: 1rem; border-bottom: 1px solid #ccd8d4; }
+#wordmark { text-decoration: none; font-size: 1.4rem; font-weight: 800; letter-spacing: -0.05em; white-space: nowrap; }
+#wordmark span { display: inline-grid; place-items: center; width: 2.3rem; height: 2.3rem; background: #164c46; color: #d2eeb7; border-radius: 0.6rem; margin-right: 0.5rem; }
+#intro { position: relative; padding-top: 4rem; margin-bottom: 3.5rem; }
+#intro > p:last-of-type { color: #536965; font-size: 1.15rem; }
+#intro-art { position: absolute; top: 3rem; right: 1.2rem; width: 220px; height: 210px; }
+#intro-art span { position: absolute; display: grid; place-items: center; font-family: Georgia, serif; line-height: 1; }
+#intro-art span:first-child { width: 145px; height: 180px; border-radius: 1rem; background: #cee3bd; font-size: 8rem; transform: rotate(-12deg); }
+#intro-art span:nth-child(2) { top: -0.5rem; right: 0; color: #a24e28; font-size: 6rem; }
+#intro-art span:last-child { right: 0; bottom: 0; width: 88px; height: 100px; background: #ffd0a4; border-radius: 0.7rem; font-size: 5rem; transform: rotate(12deg); }
+#quiz-card { padding: clamp(1.5rem, 4vw, 3rem); border-radius: 1rem; background: #e6efe7; border: 1px solid #cbdccc; }
+#question-meta { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem; }
+#question-text { font-family: Georgia, 'Times New Roman', serif; font-size: clamp(1.8rem, 3.8vw, 2.8rem); font-weight: 400; letter-spacing: -0.025em; line-height: 1.25; max-width: 850px; margin-bottom: 2rem; }
+#answer-controls { display: flex; gap: 0.75rem; max-width: 730px; }
+#answer-controls button { white-space: nowrap; }
+#answer-feedback { margin: 1rem 0 0; min-height: 1.6em; }
+#topic-count { color: #536965; white-space: nowrap; font-size: 0.875rem; }
+#topic-list { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1.75rem; }
+#search-form { display: grid; grid-template-columns: 2fr 1fr 1fr auto; align-items: end; gap: 0.8rem; }
+#search-form .field { margin: 0; }
+#search-status { color: #536965; margin: 1rem 0; }
+#search-status.error { color: #9f302b; }
+#question-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+#contribute { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: 3rem; padding-top: 3rem; border-top: 1px solid #ccd8d4; }
+#contribute-intro > p:not(.eyebrow) { color: #536965; max-width: 320px; margin-top: 1.2rem; }
+#contribute-note { font-family: Georgia, serif; font-style: italic; font-size: 1.2rem; }
+#add-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+#add-status { margin: 1rem 0 0; font-size: 0.875rem; }
+@media (max-width: 760px) {
+  #intro-art { display: none; }
+  #search-form { grid-template-columns: 1fr 1fr; }
+  #contribute { grid-template-columns: 1fr; gap: 1.5rem; }
+  #contribute-intro > p:not(.eyebrow) { max-width: none; }
+  .section-heading { align-items: start; flex-direction: column; gap: 1rem; }
+}
+@media (max-width: 480px) {
+  main, #site-header, footer { padding-left: 1rem; padding-right: 1rem; }
+  #site-header { flex-wrap: wrap; }
+  nav { gap: 1.2rem; }
+  #intro { padding-top: 2.5rem; }
+  #answer-controls { flex-direction: column; }
+  #question-list, #add-fields { grid-template-columns: 1fr; }
+  footer { flex-direction: column; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}

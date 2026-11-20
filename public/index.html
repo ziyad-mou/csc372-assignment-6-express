@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<!--
+  Name: Ziyad Abdelhamid
+  Date: 11.19.2026
+  CSC 372: Triviabook's interactive quiz, topic browser, and contribution form.
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A little curiosity goes a long way. Play trivia, explore topics, and add a question to Triviabook.">
+  <title>Triviabook — Stay curious.</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <a id="skip-link" href="#main-content">Skip to content</a>
+  <header id="site-header">
+    <a id="wordmark" href="/" aria-label="Triviabook home"><span aria-hidden="true">t.</span> triviabook</a>
+    <nav aria-label="Main navigation">
+      <a href="#play">Play</a>
+      <a href="#explore">Explore</a>
+      <a href="#contribute">Add a question</a>
+    </nav>
+  </header>
+  <main id="main-content">
+    <section id="intro" aria-labelledby="intro-title">
+      <p class="eyebrow">A little knowledge. A lot of discovery.</p>
+      <h1 id="intro-title">Stay curious.</h1>
+      <p>Big world. Small questions. See what you know,<br> discover something new, and pass it on.</p>
+      <div id="intro-art" aria-hidden="true"><span>?</span><span>✦</span><span>!</span></div>
+    </section>
+
+    <section id="play" aria-labelledby="play-title">
+      <div class="section-heading">
+        <div><p class="eyebrow">Your next discovery</p><h2 id="play-title">One question at a time.</h2></div>
+        <button id="random-button" type="button" class="secondary-button">Shuffle question</button>
+      </div>
+      <article id="quiz-card" aria-busy="true">
+        <div id="question-meta"><span id="question-topic" class="badge">Trivia</span><span id="question-difficulty" class="badge">Ready when you are</span></div>
+        <h3 id="question-text">Finding your first question…</h3>
+        <form id="answer-form">
+          <label for="guess">Your answer</label>
+          <div id="answer-controls">
+            <input id="guess" name="guess" type="text" placeholder="Take a guess…" required maxlength="500" autocomplete="off" disabled>
+            <button id="check-button" type="submit" disabled>Check answer</button>
+          </div>
+        </form>
+        <p id="answer-feedback" role="status" aria-live="polite">No timers. Just curiosity.</p>
+      </article>
+    </section>
+
+    <section id="explore" aria-labelledby="explore-title">
+      <div class="section-heading">
+        <div><p class="eyebrow">Follow your interests</p><h2 id="explore-title">Pick a topic. Go a little deeper.</h2></div>
+        <span id="topic-count">Loading topics…</span>
+      </div>
+      <div id="topic-list" role="group" aria-label="Available topics"></div>
+      <form id="search-form">
+        <div class="field"><label for="search-topic">Topic</label><input id="search-topic" name="topic" type="search" list="topic-options" placeholder="e.g. science" required maxlength="100"></div>
+        <div class="field"><label for="filter-difficulty">Difficulty</label><select id="filter-difficulty" name="difficulty"><option value="">All levels</option><option value="easy">Easy</option><option value="medium">Medium</option><option value="hard">Hard</option></select></div>
+        <div class="field"><label for="filter-limit">Question limit</label><input id="filter-limit" name="limit" type="number" min="1" step="1" placeholder="No limit"></div>
+        <button type="submit">Find questions</button>
+      </form>
+      <p id="search-status" role="status" aria-live="polite">Choose a topic above, or search for one.</p>
+      <div id="question-list"></div>
+    </section>
+
+    <section id="contribute" aria-labelledby="contribute-title">
+      <div id="contribute-intro">
+        <p class="eyebrow">Knowledge is better shared</p>
+        <h2 id="contribute-title">Know a good one?</h2>
+        <p>Add your own question to the book. Choose an existing topic or start something new.</p>
+        <p id="contribute-note">A great question has a clear answer.<br>Keep it curious. Keep it kind.</p>
+      </div>
+      <form id="add-form">
+        <div id="add-fields">
+          <div class="field"><label for="add-topic">Topic</label><input id="add-topic" type="text" name="topic" list="topic-options" placeholder="e.g. geography" required maxlength="100"></div>
+          <div class="field"><label for="add-difficulty">Difficulty</label><select id="add-difficulty" name="difficulty" required><option value="">Choose a level</option><option value="easy">Easy</option><option value="medium">Medium</option><option value="hard">Hard</option></select></div>
+        </div>
+        <div class="field"><label for="add-question">Your question</label><textarea id="add-question" name="question" rows="3" placeholder="What would you like to ask?" required maxlength="1000"></textarea></div>
+        <div class="field"><label for="add-answer">Correct answer</label><input id="add-answer" type="text" name="answer" placeholder="The answer, plain and simple" required maxlength="500"></div>
+        <button id="add-button" type="submit">Add to Triviabook</button>
+        <p id="add-status" role="status" aria-live="polite">Your question will be available for everyone to play.</p>
+      </form>
+    </section>
+    <datalist id="topic-options"></datalist>
+  </main>
+  <footer><p>triviabook <span>Made for curious minds.</span></p><p>CSC 372 · Assignment 6</p></footer>
+</body>
+</html>
